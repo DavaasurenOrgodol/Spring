@@ -1,0 +1,54 @@
+---
+spring:
+  application:
+    name: eureka
+  profiles:
+    default: default
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+---
+spring:
+  application:
+    name: eureka-server-clustered
+  profiles:
+    active: peer-1
+eureka:
+  instance:
+    hostname: peer-1-server.com
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://peer-2-server.com:9002/eureka #, http://peer-3-server.com:9003/eureka
+---
+spring:
+  application:
+    name: eureka-server-clustered
+  profiles:
+    default: peer-2
+eureka:
+  instance:
+    hostname: peer-2-server.com
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://peer-1-server.com:9001/eureka #, http://peer-3-server.com:9003/eureka
+#---
+#spring:
+#  application:
+#    name: eureka-server-clustered
+#  profiles:
+#    active: peer-3
+#eureka:
+#  instance:
+#    hostname: peer-3-server.com
+#  client:
+#    fetch-registry: false
+#    register-with-eureka: false
+#    service-url:
+server:
+  port: 9001
+#      defaultZone: http://peer-2-server.com:9002/eureka, http://peer-1-server.com:9001/eureka
